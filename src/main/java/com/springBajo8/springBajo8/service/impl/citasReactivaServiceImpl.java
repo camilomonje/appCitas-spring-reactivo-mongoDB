@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Locale;
 import java.util.Objects;
 
 @Service
@@ -79,11 +80,11 @@ public class citasReactivaServiceImpl implements IcitasReactivaService {
     public Mono<citasDTOReactiva> findByNombreMedico(String nombre, String apellidos) {
         return Objects.nonNull(nombre) ?
                 this.IcitasReactivaRepository.findByNombreMedico(nombre)
-                        .filter(cita -> Objects.equals(cita.getApellidosMedico(), apellidos))
+                        .filter(cita -> Objects.equals(cita.getApellidosMedico().toLowerCase(), apellidos.toLowerCase()))
                         .next()
                         .switchIfEmpty(Mono.empty()) :
                 this.IcitasReactivaRepository.findAll()
-                        .filter(cita -> Objects.equals(cita.getApellidosMedico(), apellidos))
+                        .filter(cita -> Objects.equals(cita.getApellidosMedico().toLowerCase(), apellidos.toLowerCase()))
                         .next()
                         .switchIfEmpty(Mono.empty());
     }
